@@ -1,4 +1,4 @@
-package com.nhlstenden.smartbbq;
+package com.nhlstenden.smartbbq.food.meat;
 
 public enum MeatType
 {

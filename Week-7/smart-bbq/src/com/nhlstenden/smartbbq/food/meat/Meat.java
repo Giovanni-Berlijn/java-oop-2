@@ -1,27 +1,28 @@
-package com.nhlstenden.smartbbq;
+package com.nhlstenden.smartbbq.food.meat;
+
+import com.nhlstenden.smartbbq.food.Food;
 
 public abstract class Meat extends Food
 {
     private double currentCookedPercentage;
-    private double cookingFactor;
-    private MeatType meatType;
+    private final double cookingFactor;
+    private final MeatType meatType;
 
-    public Meat(double browningFactor, double cookingFactor, MeatType meatType)
+    public Meat(MeatType meatType, double cookingFactor, double browningFactor)
     {
         super(browningFactor);
 
         if (meatType == null)
         {
-            throw new IllegalArgumentException("MeatType cannot be null");
+            throw new IllegalArgumentException("Meat type cannot be null.");
         }
-
-        this.meatType = meatType;
 
         if (cookingFactor < 0)
         {
-            throw new IllegalArgumentException("Cooking factor cannot be negative");
+            throw new IllegalArgumentException("Cooking factor cannot be negative.");
         }
 
+        this.meatType = meatType;
         this.cookingFactor = cookingFactor;
         this.currentCookedPercentage = 0.0;
     }
@@ -37,10 +38,9 @@ public abstract class Meat extends Food
     }
 
     @Override
-    public void grill(int temperature)
+    public void grill(double temperature)
     {
         super.grill(temperature);
-
         this.currentCookedPercentage += this.cookingFactor * temperature;
     }
 }
