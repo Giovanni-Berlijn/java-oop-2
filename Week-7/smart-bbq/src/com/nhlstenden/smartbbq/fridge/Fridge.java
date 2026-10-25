@@ -1,6 +1,7 @@
 package com.nhlstenden.smartbbq.fridge;
 
 import com.nhlstenden.smartbbq.exceptions.NoMoreFoodException;
+import com.nhlstenden.smartbbq.exceptions.FridgeIsEmptyException;
 import com.nhlstenden.smartbbq.food.Food;
 import com.nhlstenden.smartbbq.food.meat.Meat;
 import com.nhlstenden.smartbbq.food.vegetable.Vegetable;
@@ -64,6 +65,11 @@ public class Fridge
 
     private <T extends Food> T takeNextFood(Class<T> foodType, String typeName)
     {
+        if (this.foodInFridge.isEmpty())
+        {
+            throw new FridgeIsEmptyException("The fridge is empty.");
+        }
+
         Iterator<Food> iterator = this.foodInFridge.iterator();
 
         while (iterator.hasNext())

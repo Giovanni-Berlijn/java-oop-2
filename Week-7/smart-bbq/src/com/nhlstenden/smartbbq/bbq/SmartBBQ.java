@@ -3,6 +3,8 @@ package com.nhlstenden.smartbbq.bbq;
 import com.nhlstenden.smartbbq.food.Food;
 
 import java.util.HashSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SmartBBQ
 {
@@ -12,6 +14,7 @@ public class SmartBBQ
     private final HashSet<Food> food;
     private int temperature;
     private boolean isOn;
+    private Timer timer;
 
     public SmartBBQ()
     {
@@ -52,12 +55,37 @@ public class SmartBBQ
 
     public void turnOn(int temperature)
     {
+        if (this.isOn)
+        {
+            throw new IllegalStateException("SmartBBQ is already on");
+        }
+
         this.setTemperature(temperature);
         this.isOn = true;
+
+        this.timer = new Timer();
+
+        this.timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                for (Food item : SmartBBQ.this.food)
+                {
+                    item.grill(SmartBBQ.this.temperature);
+                }
+            }
+        }, 0, 1000);
     }
 
     public void turnOff()
     {
         this.isOn = false;
+
+        if (this.timer != null)
+        {
+            this.timer.cancel();
+            this.timer = null;
+        }
     }
 }
